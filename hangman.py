@@ -1,4 +1,5 @@
 import pygame
+from string import ascii_uppercase
 
 #RGB colors for drawing
 white = (255, 255, 255)
@@ -11,7 +12,7 @@ def main():
     #word = getWord()
     pygame.init()
 
-    win = pygame.display.set_mode((750, 750))
+    win = pygame.display.set_mode((750, 525))
 
     pygame.display.set_caption("Hang Man")
 
@@ -20,9 +21,8 @@ def main():
     #Track the count of wrong guesses the player has made and to start the game.
     count = 0
 
-    # header = pygame.font.SysFont("arial", 65)
-    # title = header.render("Hangman",1,black)
-    # win.blit(title,(300,20))
+    lettersGuessed = []
+    keys = ["K_a", "K_b", "K_c", "K_d", "K_e", "K_f", "K_g", "K_h", "K_i", "K_j", "K_k", "K_l", "K_m", "K_n", "K_o", "K_p", "K_q", "K_r", "K_s", "K_t", "K_u", "K_v", "K_w", "K_x", "K_y", "K_z"]
 
     while True:
         for e in pygame.event.get():
@@ -37,6 +37,8 @@ def main():
                     elif pos[1]>=200 and pos[1]<= 240:
                         print("2 Player mode Selected")
                         count += 1
+            # if e.type == pygame.KEYDOWN:
+                
         win.fill(white)
         header = pygame.font.SysFont("arial", 65)
         title = header.render("Hangman",1,black)
@@ -44,6 +46,7 @@ def main():
         pygame.draw.line(win,black,(0,450),(750,450),)
         drawHang(win, count)
         drawMan(win, count)
+        guessedLetters(win)
         # get_spaces = drawWord(win,len(word))
         # displayWord(win, get_spaces, word)
         numPlayerSelect(win, count)
@@ -126,7 +129,18 @@ def displayWord(screen, locations, word):
 #     print(chr(27)+"[2J")
 #     return word
 
+def guessedLetters(win):
+    guessFont= pygame.font.SysFont("arial",25)
+    x_start = 15
+    y = 475
+    letters = ascii_uppercase
+    for abc in letters:
+        text = guessFont.render(abc,1,black)
+        win.blit(text,(x_start,y))
+        x_start += 28
 
+
+    
 
 
 
