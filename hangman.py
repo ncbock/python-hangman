@@ -13,12 +13,16 @@ def main():
 
     win = pygame.display.set_mode((750, 750))
 
-    pygame.display.set_caption("hello")
+    pygame.display.set_caption("Hang Man")
 
     clock = pygame.time.Clock()
 
     #Track the count of wrong guesses the player has made and to start the game.
     count = 0
+
+    # header = pygame.font.SysFont("arial", 65)
+    # title = header.render("Hangman",1,black)
+    # win.blit(title,(300,20))
 
     while True:
         for e in pygame.event.get():
@@ -29,10 +33,14 @@ def main():
                 if pos[0]>= 500 and pos[0]<= 625:
                     if pos[1]>= 150 and pos[1]<=190:
                         print("1 Player mode Selected")
+                        count += 1
                     elif pos[1]>=200 and pos[1]<= 240:
                         print("2 Player mode Selected")
-                count += 1
+                        count += 1
         win.fill(white)
+        header = pygame.font.SysFont("arial", 65)
+        title = header.render("Hangman",1,black)
+        win.blit(title,(240,10))
         pygame.draw.line(win,black,(0,450),(750,450),)
         drawHang(win, count)
         drawMan(win, count)
@@ -44,14 +52,18 @@ def main():
 
 def numPlayerSelect(win, count):
     #1 Player
+    myfont = pygame.font.SysFont("monosapce",35)
     if count == 0:
         color = black
     else: 
         color = white
     pygame.draw.rect(win,color,(500,150,125,40),2)
-
+    p1 = myfont.render("1 Player",1,color)
+    win.blit(p1,(515,160))
     #2 Players
     pygame.draw.rect(win,color,(500,200,125,40),2)
+    p2 = myfont.render("2 Player",1,color)
+    win.blit(p2,(515,210))
 
 
 def drawHang(win, count):
@@ -70,7 +82,7 @@ def drawHang(win, count):
 
 def drawMan(win, count):
     if count == 0:
-        color = white
+        color = green
     else:
         color = black
     # Draw the head
