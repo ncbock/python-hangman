@@ -22,8 +22,7 @@ def main():
     count = 0
 
     lettersGuessed = []
-    keys = ["K_a", "K_b", "K_c", "K_d", "K_e", "K_f", "K_g", "K_h", "K_i", "K_j", "K_k", "K_l", "K_m", "K_n", "K_o", "K_p", "K_q", "K_r", "K_s", "K_t", "K_u", "K_v", "K_w", "K_x", "K_y", "K_z"]
-
+    
     while True:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -37,8 +36,11 @@ def main():
                     elif pos[1]>=200 and pos[1]<= 240:
                         print("2 Player mode Selected")
                         count += 1
-            # if e.type == pygame.KEYDOWN:
-                
+            if e.type == pygame.KEYDOWN:
+                if chr(e.key).upper() not in lettersGuessed and count >0:
+                    lettersGuessed.append(chr(e.key).upper())
+        
+        #print(lettersGuessed)        
         win.fill(white)
         header = pygame.font.SysFont("arial", 65)
         title = header.render("Hangman",1,black)
@@ -46,7 +48,7 @@ def main():
         pygame.draw.line(win,black,(0,450),(750,450),)
         drawHang(win, count)
         drawMan(win, count)
-        guessedLetters(win)
+        guessedLetters(win, lettersGuessed)
         # get_spaces = drawWord(win,len(word))
         # displayWord(win, get_spaces, word)
         numPlayerSelect(win, count)
@@ -129,7 +131,7 @@ def displayWord(screen, locations, word):
 #     print(chr(27)+"[2J")
 #     return word
 
-def guessedLetters(win):
+def guessedLetters(win, p):
     guessFont= pygame.font.SysFont("arial",25)
     x_start = 15
     y = 475
@@ -137,7 +139,13 @@ def guessedLetters(win):
     for abc in letters:
         text = guessFont.render(abc,1,black)
         win.blit(text,(x_start,y))
+        if abc in p:
+            pygame.draw.line(win,black,(x_start,487),(x_start+20,487),3)
         x_start += 28
+        
+
+def inputP2(win):
+    input_box = pygame.rect(550,200,125,40)
 
 
     
