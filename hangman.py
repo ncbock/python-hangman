@@ -89,24 +89,43 @@ def drawHang(win, count):
   
 def drawMan(win, count):
     if count == 0:
-        color = green
+        rope = head = body = leftLeg = rightLeg = leftArm = rightArm = green
+    elif count == 1:
+        rope = head = body = leftLeg = rightLeg = leftArm = rightArm = white
+    elif count == 2:
+        rope = black
+        head = body = leftLeg = rightLeg = leftArm = rightArm = white
+    elif count == 3:
+        rope = head = black
+        body = leftLeg = rightLeg = leftArm = rightArm = white
+    elif count == 4:
+        rope = head = body = black
+        leftLeg = rightLeg = leftArm = rightArm = white
+    elif count == 5:
+        rope = head = body = leftLeg = black
+        rightLeg = leftArm = rightArm = white
+    elif count == 6:
+        rope = head = body = leftLeg = rightLeg = black
+        leftArm = rightArm = white
+    elif count == 7:
+        rope = head = body = leftLeg = rightLeg = leftArm = black
+        rightArm = white
     else:
-        color = black
-
-     # Draw Rope
-    pygame.draw.line(win,color, (340,100),(340,150), 2)
+        rope = head = body = leftLeg = rightLeg = leftArm = rightArm = black
+    # Draw Rope
+    pygame.draw.line(win,rope, (340,107),(340,150), 2)
     # Draw the head
-    pygame.draw.circle(win,color,(340,170),20)
+    pygame.draw.circle(win,head,(340,170),20)
     # Draw the body
-    pygame.draw.line(win,color, (340,190),(340,265), 2)
+    pygame.draw.line(win,body, (340,190),(340,265), 2)
     # Draw Left Leg
-    pygame.draw.line(win,color, (340,265),(305,300), 2)
+    pygame.draw.line(win,leftLeg, (340,265),(305,300), 2)
     # Draw Right Leg
-    pygame.draw.line(win,color, (340,265),(375,300), 2)
+    pygame.draw.line(win,rightLeg, (340,265),(375,300), 2)
     #Draw Left Arm
-    pygame.draw.line(win,color, (340,215),(305,250), 2)
+    pygame.draw.line(win,leftArm, (340,215),(305,250), 2)
     # Draw Right Arm
-    pygame.draw.line(win,color, (340,215),(375,250), 2)
+    pygame.draw.line(win,rightArm, (340,215),(375,250), 2)
 
 def displayWord(screen, word, guesses):
     font = pygame.font.SysFont("Arial", 20)
