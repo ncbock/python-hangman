@@ -31,9 +31,7 @@ def main():
             if e.type == pygame.MOUSEBUTTONDOWN and count < 1:
                 pos = pygame.mouse.get_pos()
                 if pos[0] in range(500,626):
-                    if pos[1] in range(150,191):
-                        count += 1
-                    elif pos[1] in range(200,241):
+                    if pos[1] in range(200,241):
                         count += 1
                         word = getWord()
             if e.type == pygame.MOUSEBUTTONDOWN and playAgain(win, word, count, lettersGuessed):
@@ -46,8 +44,14 @@ def main():
                         return 
             if e.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                if pos[0] in range(20,121) and pos[1] in range(20,59):
-                    return
+                if pos[0] in range(20,121):
+                    if pos[1] in range(20,59):
+                        return
+            if e.type == pygame.MOUSEBUTTONDOWN and count >0:
+                pos = pygame.mouse.get_pos()
+                if pos[0] in range(20,121):
+                    if pos[1] in range(68,107):
+                        count = 0
             if e.type == pygame.KEYDOWN:
                 if chr(e.key).upper() not in lettersGuessed and count >0:
                     lettersGuessed.append(chr(e.key).upper())
@@ -63,6 +67,7 @@ def main():
         title = header.render("Hangman",1,black)
         win.blit(title,(240,10))
         quitButton(win)
+        homeButton(win, count)
         youLoseText(win, count)
         youWinText(win, word, count, lettersGuessed)
         playAgain(win, word, count, lettersGuessed)
@@ -75,33 +80,23 @@ def main():
         clock.tick(60)
 
 def numPlayerSelect(win, count):
-    #1 Player
     myfont = pygame.font.SysFont("arial",30)
-    pos = pygame.mouse.get_pos()
     if count == 0:
+        pos = pygame.mouse.get_pos()
         color = black
-        rectOneColor = black
-        rectOneSize = 2
         rectTwoColor = black
         rectTwoSize = 2
         if pos[0] in range(500,626):
-            if pos[1] in range(150,191):
-                rectOneColor = green
-                rectOneSize = 4
             if pos[1] in range(200,241):
                 rectTwoColor = green
                 rectTwoSize = 4
     else: 
-        rectOneColor = rectTwoColor = white
-        rectOneSize = rectTwoSize = 2
+        rectTwoColor = white
+        rectTwoSize = 2
         color = white
-    pygame.draw.rect(win,rectOneColor,(500,150,125,40),rectOneSize)
-    p1 = myfont.render("1 Player",1,color)
-    win.blit(p1,(510,153))
-    #2 Players
     pygame.draw.rect(win,rectTwoColor,(500,200,125,40),rectTwoSize)
-    p2 = myfont.render("2 Player",1,color)
-    win.blit(p2,(510,203))
+    p2 = myfont.render("PLAY",1,color)
+    win.blit(p2,(527,205))
 
 
 def drawHang(win, count):
@@ -260,8 +255,24 @@ def quitButton(screen):
             buttonSize = 4
     
     pygame.draw.rect(screen,buttonColor,(20,20,100,38),buttonSize)
-    buttonText=myfont.render("Quit",1,buttonColor)
-    screen.blit(buttonText,(35,20))
+    buttonText=myfont.render("QUIT",1,buttonColor)
+    screen.blit(buttonText,(30,20))
+
+def homeButton(screen, count):
+    if count >0:
+        myfont = pygame.font.SysFont("arial", 30)
+        pos = pygame.mouse.get_pos()
+        buttonColor = black
+        buttonSize = 2
+
+        if pos[0] in range(20,121):
+            if pos[1] in range(68,107):
+                buttonColor = green
+                buttonSize = 4
+        
+        pygame.draw.rect(screen,buttonColor,(20,68,100,38),buttonSize)
+        buttonText=myfont.render("HOME",1,buttonColor)
+        screen.blit(buttonText,(25,70))
 
 if __name__ == '__main__':
     main()
