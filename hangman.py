@@ -6,6 +6,7 @@ from getpass import getpass
 white = (255, 255, 255)
 black = (0,0,0)
 green = (0,255, 0)
+red = (255, 0, 0)
 
 clock = pygame.time.Clock()
 
@@ -156,7 +157,7 @@ def youLoseText(screen, count):
     if count >= 8:
         font = pygame.font.SysFont("arial", 45)
         text = "YOU LOSE! :("
-        display = font.render(text,1,black)
+        display = font.render(text,1,red)
         screen.blit(display, (400,250))
         return True
     return False
@@ -170,7 +171,7 @@ def youWinText(screen, word, count, guesses):
         if winCount == len(word):
             font = pygame.font.SysFont("arial", 45)
             text = "YOU WIN!!!!"
-            display = font.render(text,1,black)
+            display = font.render(text,1,green)
             screen.blit(display, (400,250))
             return True
     return False
@@ -219,15 +220,25 @@ def livesRemaining(screen, count):
             
 def playAgain(screen, word, count, guess):
     myfont = pygame.font.SysFont("monosapce",35)
+    pos = pygame.mouse.get_pos()
     if youWinText(screen, word, count, guess) or youLoseText(screen,count):
-        color = black
+        
+        pgColor = quitColor = black
+        pgSize = quitSize = 2
+        if pos[0] >=550 and pos[0] <= 700:
+            if pos[1] >= 350 and pos[1] <= 390:
+                pgColor = green
+                pgSize = 4
+            if pos[1] >= 400 and pos[1]<= 440:
+                quitColor = red
+                quitSize = 4
         #Play Again Button
-        pygame.draw.rect(screen,color,(550,350,150,40),2)
-        playAgain = myfont.render("Play Again",1,color)
+        pygame.draw.rect(screen,pgColor,(550,350,150,40),pgSize)
+        playAgain = myfont.render("Play Again",1,black)
         screen.blit(playAgain,(565,360))
         #Quit Button
-        pygame.draw.rect(screen,color,(550,400,150,40),2)
-        quitGame = myfont.render("QUIT",1,color)
+        pygame.draw.rect(screen,quitColor,(550,400,150,40),quitSize)
+        quitGame = myfont.render("QUIT",1,black)
         screen.blit(quitGame,(565,410))
         return True
     return False
