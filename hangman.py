@@ -180,12 +180,14 @@ def displayWord(screen, word, guesses, count):
     font = pygame.font.SysFont("Arial", 20)
     disp = []
     for abc in word:
-        if youLoseText(screen, count):
-            disp.append(" "+abc.upper()+" ")
         if abc.upper() in guesses:
             disp.append(" "+abc.upper()+" ")
         else:
             disp.append("__ ")
+    if youLoseText(screen, count):
+        disp = []
+        for abc in word:
+            disp.append(" "+abc.upper()+" ")
     lenWord = len(disp)
     widthRect = (27.5 * lenWord) + 15
     rectStart = 375- (widthRect/2)
