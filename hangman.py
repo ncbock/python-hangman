@@ -45,16 +45,18 @@ def main():
         
         # All drawing to occur after win.fill or else it will be erased.
         win.fill(white)
-        if count >0:
+        if count >0 and count <8:
             displayWord(win, word, lettersGuessed)
             livesRemaining(win, count)
         header = pygame.font.SysFont("arial", 65)
         title = header.render("Hangman",1,black)
         win.blit(title,(240,10))
+        youLoseText(win, count)
+        youWintText(win, word, count, lettersGuessed)
         pygame.draw.line(win,black,(0,450),(750,450),)
         drawHang(win, count)
         drawMan(win, count)
-        guessedLetters(win, lettersGuessed)
+        guessedLetters(win, lettersGuessed, count)
         numPlayerSelect(win, count)
         pygame.display.update()
         clock.tick(60)
@@ -146,7 +148,7 @@ def getWord():
     word = getpass("Enter your Word: ")
     return word
 
-def guessedLetters(win, p):
+def guessedLetters(win, p, count):
     guessFont= pygame.font.SysFont("arial",25)
     x_start = 15
     y = 475
@@ -154,16 +156,38 @@ def guessedLetters(win, p):
     for abc in letters:
         text = guessFont.render(abc,1,black)
         win.blit(text,(x_start,y))
-        if abc in p:
+        if abc in p and count < 8:
             pygame.draw.line(win,black,(x_start,487),(x_start+20,487),3)
         x_start += 28
 
 def livesRemaining(screen, count):
     font = pygame.font.SysFont("arial", 20)
-    lives = 8 - count
+    if count <= 8:
+        lives = 8 - count
+    else:
+        lives = 0
     text = font.render("Lives: %i" %(lives),1,black)
     screen.blit(text, (625,40))
 
+def youLoseText(screen, count):
+    if count >= 8:
+        font = pygame.font.SysFont("arial", 45)
+        text = "YOU LOSE! :("
+        display = font.render(text,1,black)
+        screen.blit(display, (400,250))
+
+def youWintText(screen, word, count, guesses):
+    winCount = 0
+    if count > 0 and count <8:
+        for abc in word.upper():
+            if abc in guesses:
+                winCount += 1
+        if winCount == len(word):
+            font = pygame.font.SysFont("arial", 45)
+            text = "YOU WIN!!!!"
+            display = font.render(text,1,black)
+            screen.blit(display, (400,250))
+            
 
 
 if __name__ == '__main__':
