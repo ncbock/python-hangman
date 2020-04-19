@@ -37,6 +37,14 @@ def main():
                         print("2 Player mode Selected")
                         count += 1
                         word = getWord()
+            if e.type == pygame.MOUSEBUTTONDOWN and playAgain(win, word, count, lettersGuessed):
+                pos = pygame.mouse.get_pos()
+                if pos[0] >= 550 and pos[0] <= 700:
+                    if pos[1] >= 350 and pos[1] <= 390:
+                        count = 0
+                        lettersGuessed = []
+                    if pos[1] >= 400 and pos[1] <= 440:
+                        return 
             if e.type == pygame.KEYDOWN:
                 if chr(e.key).upper() not in lettersGuessed and count >0:
                     lettersGuessed.append(chr(e.key).upper())
@@ -47,12 +55,13 @@ def main():
         win.fill(white)
         if count >0 and count <8:
             displayWord(win, word, lettersGuessed)
-            livesRemaining(win, count)
+            livesRemaining(win, count)           
         header = pygame.font.SysFont("arial", 65)
         title = header.render("Hangman",1,black)
         win.blit(title,(240,10))
         youLoseText(win, count)
-        youWintText(win, word, count, lettersGuessed)
+        youWinText(win, word, count, lettersGuessed)
+        playAgain(win, word, count, lettersGuessed)
         pygame.draw.line(win,black,(0,450),(750,450),)
         drawHang(win, count)
         drawMan(win, count)
@@ -175,8 +184,10 @@ def youLoseText(screen, count):
         text = "YOU LOSE! :("
         display = font.render(text,1,black)
         screen.blit(display, (400,250))
+        return True
+    return False
 
-def youWintText(screen, word, count, guesses):
+def youWinText(screen, word, count, guesses):
     winCount = 0
     if count > 0 and count <8:
         for abc in word.upper():
@@ -187,8 +198,23 @@ def youWintText(screen, word, count, guesses):
             text = "YOU WIN!!!!"
             display = font.render(text,1,black)
             screen.blit(display, (400,250))
+            return True
+    return False
             
-
+def playAgain(screen, word, count, guess):
+    myfont = pygame.font.SysFont("monosapce",35)
+    if youWinText(screen, word, count, guess) or youLoseText(screen,count):
+        color = black
+        #Play Again Button
+        pygame.draw.rect(screen,color,(550,350,150,40),2)
+        playAgain = myfont.render("Play Again",1,color)
+        screen.blit(playAgain,(565,360))
+        #Quit Button
+        pygame.draw.rect(screen,color,(550,400,150,40),2)
+        quitGame = myfont.render("QUIT",1,color)
+        screen.blit(quitGame,(565,410))
+        return True
+    return False
 
 if __name__ == '__main__':
     main()
