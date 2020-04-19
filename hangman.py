@@ -10,7 +10,6 @@ green = (0,255, 0)
 clock = pygame.time.Clock()
 
 def main():
-    #word = getWord()
     pygame.init()
 
     win = pygame.display.set_mode((750, 525))
@@ -48,6 +47,7 @@ def main():
         win.fill(white)
         if count >0:
             displayWord(win, word, lettersGuessed)
+            livesRemaining(win, count)
         header = pygame.font.SysFont("arial", 65)
         title = header.render("Hangman",1,black)
         win.blit(title,(240,10))
@@ -157,6 +157,14 @@ def guessedLetters(win, p):
         if abc in p:
             pygame.draw.line(win,black,(x_start,487),(x_start+20,487),3)
         x_start += 28
+
+def livesRemaining(screen, count):
+    font = pygame.font.SysFont("arial", 20)
+    lives = 8 - count
+    text = font.render("Lives: %i" %(lives),1,black)
+    screen.blit(text, (625,40))
+
+
 
 if __name__ == '__main__':
     main()
