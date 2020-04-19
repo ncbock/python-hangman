@@ -53,8 +53,8 @@ def main():
         
         # All drawing to occur after win.fill or else it will be erased.
         win.fill(white)
-        if count >0 and count <8:
-            displayWord(win, word, lettersGuessed)
+        if count >0 and count <= 8:
+            displayWord(win, word, lettersGuessed, count)
             livesRemaining(win, count)           
         header = pygame.font.SysFont("arial", 65)
         title = header.render("Hangman",1,black)
@@ -73,15 +73,29 @@ def main():
 def numPlayerSelect(win, count):
     #1 Player
     myfont = pygame.font.SysFont("monosapce",35)
+    pos = pygame.mouse.get_pos()
     if count == 0:
         color = black
+        rectOneColor = black
+        rectOneSize = 2
+        rectTwoColor = black
+        rectTwoSize = 2
+        if pos[0] >= 500 and pos[0] <= 625:
+            if pos[1] >= 150 and pos[1] <= 190:
+                rectOneColor = green
+                rectOneSize = 4
+            if pos[1] >= 200 and pos[1] <= 240:
+                rectTwoColor = green
+                rectTwoSize = 4
     else: 
+        rectOneColor = rectTwoColor = white
+        rectOneSize = rectTwoSize = 2
         color = white
-    pygame.draw.rect(win,color,(500,150,125,40),2)
+    pygame.draw.rect(win,rectOneColor,(500,150,125,40),rectOneSize)
     p1 = myfont.render("1 Player",1,color)
     win.blit(p1,(515,160))
     #2 Players
-    pygame.draw.rect(win,color,(500,200,125,40),2)
+    pygame.draw.rect(win,rectTwoColor,(500,200,125,40),rectTwoSize)
     p2 = myfont.render("2 Player",1,color)
     win.blit(p2,(515,210))
 
@@ -138,10 +152,35 @@ def drawMan(win, count):
     # Draw Right Arm
     pygame.draw.line(win,rightArm, (340,215),(375,250), 2)
 
-def displayWord(screen, word, guesses):
+def youLoseText(screen, count):
+    if count >= 8:
+        font = pygame.font.SysFont("arial", 45)
+        text = "YOU LOSE! :("
+        display = font.render(text,1,black)
+        screen.blit(display, (400,250))
+        return True
+    return False
+
+def youWinText(screen, word, count, guesses):
+    winCount = 0
+    if count > 0 and count <8:
+        for abc in word.upper():
+            if abc in guesses:
+                winCount += 1
+        if winCount == len(word):
+            font = pygame.font.SysFont("arial", 45)
+            text = "YOU WIN!!!!"
+            display = font.render(text,1,black)
+            screen.blit(display, (400,250))
+            return True
+    return False
+
+def displayWord(screen, word, guesses, count):
     font = pygame.font.SysFont("Arial", 20)
     disp = []
     for abc in word:
+        if youLoseText(screen, count):
+            disp.append(" "+abc.upper()+" ")
         if abc.upper() in guesses:
             disp.append(" "+abc.upper()+" ")
         else:
@@ -177,29 +216,6 @@ def livesRemaining(screen, count):
         lives = 0
     text = font.render("Lives: %i" %(lives),1,black)
     screen.blit(text, (625,40))
-
-def youLoseText(screen, count):
-    if count >= 8:
-        font = pygame.font.SysFont("arial", 45)
-        text = "YOU LOSE! :("
-        display = font.render(text,1,black)
-        screen.blit(display, (400,250))
-        return True
-    return False
-
-def youWinText(screen, word, count, guesses):
-    winCount = 0
-    if count > 0 and count <8:
-        for abc in word.upper():
-            if abc in guesses:
-                winCount += 1
-        if winCount == len(word):
-            font = pygame.font.SysFont("arial", 45)
-            text = "YOU WIN!!!!"
-            display = font.render(text,1,black)
-            screen.blit(display, (400,250))
-            return True
-    return False
             
 def playAgain(screen, word, count, guess):
     myfont = pygame.font.SysFont("monosapce",35)
